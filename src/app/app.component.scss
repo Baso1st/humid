@@ -1,7 +1,21 @@
-.main-dev {
-    height: 70vh;
-    margin-top: 15vh;
-    margin-bottom: 15vh;
-    margin-right: 0;
-    margin-left: 0;
+
+.top {
+    height: 10vh;
+}
+
+.middle {
+    height: 80vh !important;
+}
+
+.image-container {
+    height: 60vh !important;
+    img{
+        height: 100%;
+        width: auto;
+    }
+}
+
+
+.bottom {
+    height: 10vh !important;
 }

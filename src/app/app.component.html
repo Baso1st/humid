@@ -1,7 +1,58 @@
-<div class="row main-dev bg-danger">
-    <div class="col bg-success"></div>
-    <div class="col-6 bg-danger"></div>
-    <div class="col bg-success"></div>
+<div *ngIf="cities">
+    <div class="top row m-0">
+        <div class="col"></div>
+        <div [formGroup]="formGroup" class="col-6 align-self-center">
+            <!-- <mat-form-field class="w-100 text-dark">
+                <input matInput placeholder="Your Location" formControlName="location">
+                <mat-icon matSuffix>mode_edit</mat-icon>
+            </mat-form-field> -->
+            <mat-form-field class="w-100">
+                <input type="text" placeholder="Your Location" matInput formControlName="location" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="autoCompleteDisplayFn">
+                  <mat-option *ngFor="let city of filteredCities | async" [value]="city">
+                    {{city?.name}}, {{city?.country}}
+                  </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="middle row m-0">
+        <div class="col"></div>
+        <div class="col-5 text-center">
+            <div class="image-container">
+                <img  src="../assets/humid2.jfif" alt="Woooooooow">
+            </div>
+            <div class="date-sun row m-0">
+                <div class="col date align-self-center">
+                    <div class="row m-0">
+                        <div class="col month">Dec</div>
+                        <div class="col year-1">20</div>
+                    </div>
+                    <div class="row m-0">
+                        <div class="col day">23</div>
+                        <div class="col year-2">20</div>
+                    </div>
+                </div>
+                <div class="col sun">
+                    <img src="../assets/weather-icon1.png" alt="">
+                </div>
+            </div>
+            <div class="weather">
+                <div class="weather-1 row m-0">
+                    <div class="col-8 temperature border border-dark border-bottom-0">Temp: 40 F</div>
+                    <div class="col humidity border border-dark border-bottom-0">Humidity: 40</div>
+                </div>
+                <div class="weather-2 row m-0">
+                    <div class="col-4 wind border border-dark">Wind: 40 </div>
+                    <div class="col precipitation border border-dark">Precipitation: 80%</div>
+                </div>
+            </div>
+        </div>  
+        <div class="col"></div>
+    </div>
+    <div class="bottom border row m-0">
+    </div>
 </div>
 
-<!-- <div>{{weatherPoint | json}}</div> -->
+<div>{{weatherPoint | json}}</div>
