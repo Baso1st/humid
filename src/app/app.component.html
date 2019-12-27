@@ -1,4 +1,4 @@
-<div *ngIf="cities">
+<div >
     <div class="top row m-0">
         <div class="col"></div>
         <div [formGroup]="formGroup" class="col-6 align-self-center">
@@ -10,7 +10,7 @@
                 <input type="text" placeholder="Your Location" matInput formControlName="location" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="autoCompleteDisplayFn">
                   <mat-option *ngFor="let city of filteredCities | async" [value]="city">
-                    {{city?.name}}, {{city?.country}}
+                    {{city}}
                   </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
@@ -20,7 +20,7 @@
     <div class="middle row m-0">
         <div class="col"></div>
         <div class="col-5 text-center">
-            <div class="image-container">
+            <div class="image-container bg-light">
                 <img  src="../assets/humid2.jfif" alt="Woooooooow">
             </div>
             <div class="date-sun row m-0">

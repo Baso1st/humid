@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from './services/weather.service';
-import { WeatherPoint, City } from './types';
+import { WeatherPoint} from './types';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, startWith, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, startWith, map, flatMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { LocationService } from './services/location.service';
 
 
 @Component({
@@ -15,33 +16,23 @@ export class AppComponent implements OnInit {
 
   weatherPoint: WeatherPoint;
   formGroup: FormGroup;
-  cities: Array<City>;
-  filteredCities: Observable<Array<City>>;
+  filteredCities: Observable<Array<string>>;
 
   constructor(
     private weatherService: WeatherService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private locationService: LocationService
   ) { }
 
   ngOnInit() {
-
-    this.weatherService.getCities().subscribe(cities => {
-      // this.cities = cities.slice(0, 100);
-      this.cities = cities;
-    })
-
     this.formGroup = this.formBuilder.group({
       'location': ['']
     });
 
      this.filteredCities = this.formGroup.get('location').valueChanges.pipe(
-        debounceTime(200),
+        debounceTime(100),
         distinctUntilChanged(),
-        // startWith(''),
-        map(value => {
-          const filterValue = value.toLowerCase();
-          return this.cities.filter(city => `${city.name}${city.country}`.toLowerCase().includes(filterValue));
-        })
+        flatMap(newValue => newValue.trim() ? this.locationService.getLocations(newValue): [])
        )
 
     if (navigator.geolocation) {
@@ -56,10 +47,6 @@ export class AppComponent implements OnInit {
       });
     } else {
     }
-  }
-
-  autoCompleteDisplayFn(city: City): string | undefined {
-    return city ? `${city.name}, ${city.country}` : undefined;
   }
 
 }

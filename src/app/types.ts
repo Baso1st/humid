@@ -49,13 +49,3 @@ export interface Wind {
     speed: number;
     deg:   number;
 }
-
-////////////////////////////////////////////////////////////////////////////////
-
-
-export interface City {
-    id: number;
-    name: string;
-    country: string;
-    coord: Coord;
-}
