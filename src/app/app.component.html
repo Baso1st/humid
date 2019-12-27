@@ -2,17 +2,14 @@
     <div class="top row m-0">
         <div class="col"></div>
         <div [formGroup]="formGroup" class="col-6 align-self-center">
-            <!-- <mat-form-field class="w-100 text-dark">
-                <input matInput placeholder="Your Location" formControlName="location">
-                <mat-icon matSuffix>mode_edit</mat-icon>
-            </mat-form-field> -->
             <mat-form-field class="w-100">
                 <input type="text" placeholder="Your Location" matInput formControlName="location" [matAutocomplete]="auto">
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="autoCompleteDisplayFn">
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="citySelected($event)">
                   <mat-option *ngFor="let city of filteredCities | async" [value]="city">
                     {{city}}
                   </mat-option>
                 </mat-autocomplete>
+                <mat-icon matSuffix>mode_edit</mat-icon>
             </mat-form-field>
         </div>
         <div class="col"></div>
@@ -55,4 +52,4 @@
     </div>
 </div>
 
-<div>{{weatherPoint | json}}</div>
+<!-- <div>{{weatherPoint | json}}</div> -->

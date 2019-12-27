@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, startWith, map, flatMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { LocationService } from './services/location.service';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 
 @Component({
@@ -47,6 +48,21 @@ export class AppComponent implements OnInit {
       });
     } else {
     }
+  }
+
+  citySelected(event: MatAutocompleteSelectedEvent) {
+    if (event && event.option && event.option.value)
+      this.locationService.getGeoCode(event.option.value).subscribe(geoCode => {
+        if (geoCode && geoCode.results && geoCode.results.length > 0) {
+          let latitude = geoCode.results[0].geometry.location.lat;
+          let longitude = geoCode.results[0].geometry.location.lng;
+          this.weatherService.getWeather(latitude, longitude).subscribe(weatherPoint => {
+            if (weatherPoint) {
+              this.weatherPoint = weatherPoint;
+            }
+          })
+        }
+      })
   }
 
 }

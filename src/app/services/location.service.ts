@@ -27,8 +27,8 @@ export class LocationService {
     return this.predictionSubject;
   }
 
-  getGeoCode(cityName: string) {
-    this.http.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${cityName}&key=${this.gKey}`);
+  getGeoCode(cityName: string): Observable<any> {
+    return this.http.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${cityName}&key=${this.gKey}`);
   }
 
 } 
