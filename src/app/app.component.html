@@ -1,7 +1,9 @@
-<div >
-    <div class="top row m-0">
-        <div class="col"></div>
-        <div [formGroup]="formGroup" class="col-6 align-self-center">
+
+<!-- <div class="test">{{weatherPoint | json}}</div> -->
+
+<div class="parent">
+    <div class="top row no-gutters">
+        <div [formGroup]="formGroup" class="col col-md-6 offset-md-3 align-self-center">
             <mat-form-field class="w-100">
                 <input type="text" placeholder="Your Location" matInput formControlName="location" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete" (optionSelected)="citySelected($event)">
@@ -12,44 +14,54 @@
                 <mat-icon matSuffix>mode_edit</mat-icon>
             </mat-form-field>
         </div>
-        <div class="col"></div>
     </div>
-    <div class="middle row m-0">
-        <div class="col"></div>
-        <div class="col-5 text-center">
+
+    <div *ngIf="weatherPoint" class="middle row no-gutters">
+        <div class="col-12 col-md-6 offset-md-3 text-center">
             <div class="image-container bg-light">
-                <img  src="../assets/humid2.jfif" alt="Woooooooow">
+                <img [src]="imageSource" alt="Woooooooow">
             </div>
-            <div class="date-sun row m-0">
-                <div class="col date align-self-center">
-                    <div class="row m-0">
-                        <div class="col month">Dec</div>
-                        <div class="col year-1">20</div>
-                    </div>
-                    <div class="row m-0">
-                        <div class="col day">23</div>
-                        <div class="col year-2">20</div>
-                    </div>
-                </div>
-                <div class="col sun">
-                    <img src="../assets/weather-icon1.png" alt="">
-                </div>
-            </div>
-            <div class="weather">
-                <div class="weather-1 row m-0">
-                    <div class="col-8 temperature border border-dark border-bottom-0">Temp: 40 F</div>
-                    <div class="col humidity border border-dark border-bottom-0">Humidity: 40</div>
-                </div>
-                <div class="weather-2 row m-0">
-                    <div class="col-4 wind border border-dark">Wind: 40 </div>
-                    <div class="col precipitation border border-dark">Precipitation: 80%</div>
-                </div>
-            </div>
-        </div>  
-        <div class="col"></div>
+        </div>
     </div>
-    <div class="bottom border row m-0">
+
+    <div *ngIf="weatherPoint" class="bottom border d-flex weather-font">
+        <div class="row no-gutters  align-self-center flex-fill">
+            <div class="col-12 col-md-5 left align-self-center" [class.border-right-3]="screedWidth >= 768">
+                <div class="row no-gutters">
+                    <div class="col col-md-3 date align-self-center">
+                        <div class="text-right">{{weatherPoint?.dt * 1000 | date: 'MMMM  d'}}</div>
+                        <div class="text-right">{{weatherPoint?.dt * 1000 | date: 'yyyy'}}</div>
+                    </div>
+                    <div class="col col-md-6 text-center icon align-self-center">
+                        <img [src]="iconSource" alt="sunny">
+                    </div>
+                    <div class="col col-md-3 text-center temp align-self-center">{{weatherPoint?.main?.temp}}&#x2109;</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-7 righ align-self-center">
+                <div class="row no-gutters">
+                    <div class="col wind">
+                        <div class="row no-gutters">
+                            <div class="col text-right border-right-3 pr-1">Wind</div>
+                            <div class="col text-left pl-1">{{weatherPoint?.wind?.speed}}</div>
+                        </div>
+                    </div>
+                    <div class="col humid">
+                        <div class="row no-gutters">
+                            <div class="col text-right border-right-3 pr-1">Humidity</div>
+                            <div class="col text-left pl-1">{{weatherPoint?.main?.humidity}}%</div>
+                        </div>
+                    </div>
+                    <div class="col precip">
+                        <div class="row no-gutters">
+                            <div class="col text-right border-right-3 pr-1">Precip</div>
+                            <div class="col text-left pl-1">10%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 </div>
 
-<!-- <div>{{weatherPoint | json}}</div> -->

@@ -4,18 +4,45 @@
 }
 
 .middle {
-    height: 80vh !important;
+    height: 70vh !important;
 }
 
 .image-container {
-    height: 60vh !important;
+    height: 70vh !important;
     img{
         height: 100%;
         width: auto;
     }
 }
 
-
 .bottom {
-    height: 10vh !important;
+    height: 20vh !important;
 }
+
+.border-right-3 {
+    border-right: 3px solid gainsboro;
+}
+
+@media only screen and (min-width: 768px) {
+    .weather-font {
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .parent {
+        font-size: 0.8rem;
+    }
+}
+
+.icon {
+    img {
+        max-height: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+// .test {
+//     height: 100vh !important;
+// }

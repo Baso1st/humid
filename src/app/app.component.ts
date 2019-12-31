@@ -18,6 +18,11 @@ export class AppComponent implements OnInit {
   weatherPoint: WeatherPoint;
   formGroup: FormGroup;
   filteredCities: Observable<Array<string>>;
+  imageSourceDirectory = "../assets/images/";
+  imageSource: string;
+  iconSourceAPI = "https://openweathermap.org/img/wn/";
+  iconSource: string;
+  screedWidth: number;
 
   constructor(
     private weatherService: WeatherService,
@@ -26,6 +31,9 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.screedWidth = window.screen.width;
+
     this.formGroup = this.formBuilder.group({
       'location': ['']
     });
@@ -41,6 +49,8 @@ export class AppComponent implements OnInit {
         this.weatherService.getWeather(position.coords.latitude, position.coords.longitude).subscribe(weatherPoint => {
           if (weatherPoint) {
             this.weatherPoint = weatherPoint;
+            this.setImageSource();
+            this.setIconSource();
           }
         })
       }, error => {
@@ -48,8 +58,14 @@ export class AppComponent implements OnInit {
       });
     } else {
     }
+    
   }
 
+  /**
+   * Calls the location service to get the geocode based on the user text
+   * and uses that geocode to retrieve the weather info. Then calls the setImageSource and setIconSource functions.
+   * @param event 
+   */
   citySelected(event: MatAutocompleteSelectedEvent) {
     if (event && event.option && event.option.value)
       this.locationService.getGeoCode(event.option.value).subscribe(geoCode => {
@@ -59,10 +75,44 @@ export class AppComponent implements OnInit {
           this.weatherService.getWeather(latitude, longitude).subscribe(weatherPoint => {
             if (weatherPoint) {
               this.weatherPoint = weatherPoint;
+              this.setImageSource();
+              this.setIconSource();
             }
           })
         }
       })
+  }
+
+
+  /**
+   * Sets the images source based on the humidity level
+   */
+  setImageSource() {
+    if (this.weatherPoint) {
+      let humidity = this.weatherPoint.main.humidity;
+      if (!humidity || humidity <= 0) {
+        this.imageSource = this.imageSourceDirectory + "humid1.png";
+      } else if (humidity <= 20) {
+        this.imageSource = this.imageSourceDirectory + "humid2.png";
+      } else if (humidity <= 40) {
+        this.imageSource = this.imageSourceDirectory + "humid3.png";
+      } else if (humidity <= 60) {
+        this.imageSource = this.imageSourceDirectory + "humid4.png";
+      } else if (humidity <= 80) {
+        this.imageSource = this.imageSourceDirectory + "humid5.png";
+      } else if (humidity <= 100) {
+        this.imageSource = this.imageSourceDirectory + "humid6.png";
+      }
+    }
+  }
+
+  /**
+   * Sets the icon source based on the retrieved icon name from the WeatherPoint object.
+   */
+  setIconSource() {
+    if (this.weatherPoint) {
+      this.iconSource = `${this.iconSourceAPI}${this.weatherPoint.weather[0].icon}${this.screedWidth >= 768 ? '@2x' : ''}.png`
+    }
   }
 
 }
