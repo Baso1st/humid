@@ -24,6 +24,9 @@ export class AppComponent implements OnInit {
   iconSource: string;
   screedWidth: number;
 
+  lat = 41.1253703;
+  long  = -85.3485966;
+
   constructor(
     private weatherService: WeatherService,
     private formBuilder: FormBuilder,
@@ -54,7 +57,13 @@ export class AppComponent implements OnInit {
           }
         })
       }, error => {
-
+        this.weatherService.getWeather(this.lat, this.long).subscribe(weatherPoint => {
+          if (weatherPoint) {
+            this.weatherPoint = weatherPoint;
+            this.setImageSource();
+            this.setIconSource();
+          }
+        })
       });
     } else {
     }
