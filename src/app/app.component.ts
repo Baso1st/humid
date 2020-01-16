@@ -24,8 +24,8 @@ export class AppComponent implements OnInit {
   iconSource: string;
   screedWidth: number;
 
-  testLat = 41.1253703;
-  testLong  = -85.3485966;
+  FortWayneLat = 41.1253703;
+  FortWayneLong  = -85.3485966;
 
   constructor(
     private weatherService: WeatherService,
@@ -57,7 +57,8 @@ export class AppComponent implements OnInit {
           }
         })
       }, error => {
-        this.weatherService.getWeather(this.testLat, this.testLong).subscribe(weatherPoint => {
+        this.formGroup.get('location').setValue('Fort Wayne, IN, USA')
+        this.weatherService.getWeather(this.FortWayneLat, this.FortWayneLong).subscribe(weatherPoint => {
           if (weatherPoint) {
             this.weatherPoint = weatherPoint;
             this.setImageSource();
