@@ -9,7 +9,6 @@ import { WeatherPoint} from '../types';
 })
 export class WeatherService {
 
-
   weatherKey = "d69052cdbbbf76ae897e756a1d311594"
 
   constructor(
