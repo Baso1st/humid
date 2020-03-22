@@ -3,7 +3,7 @@
 
 <div class="parent">
     <div class="top row no-gutters">
-        <div [formGroup]="formGroup" class="col col-md-6 offset-md-3 align-self-center">
+        <div [formGroup]="formGroup" class="col-9 pl-4 pl-md-0 col-md-6 offset-md-3 align-self-center">
             <mat-form-field class="w-100">
                 <input type="text" placeholder="Your Location" matInput formControlName="location" [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete" (optionSelected)="citySelected($event)">
@@ -13,6 +13,13 @@
                 </mat-autocomplete>
                 <mat-icon matSuffix>mode_edit</mat-icon>
             </mat-form-field>
+        </div>
+        <div class="col-2">
+            <div class="mt-md-4 mt-3 ml-4 ml-md-0 text-center">
+                <a href="https://www.redbubble.com/shop/ap/46011269?asc=u" target="_blank" class="shopping-color">
+                    <i class="fas fa-2x fa-shopping-bag"></i>
+                </a>
+            </div>
         </div>
     </div>
 
