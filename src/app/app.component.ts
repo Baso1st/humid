@@ -6,7 +6,8 @@ import { debounceTime, distinctUntilChanged, startWith, map, flatMap } from 'rxj
 import { Observable } from 'rxjs';
 import { LocationService } from './services/location.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
-
+import { Router, NavigationEnd } from '@angular/router';
+declare let fbq:Function;
 
 @Component({
   selector: 'app-root',
@@ -30,8 +31,15 @@ export class AppComponent implements OnInit {
   constructor(
     private weatherService: WeatherService,
     private formBuilder: FormBuilder,
-    private locationService: LocationService
-  ) { }
+    private locationService: LocationService,
+    private router: Router
+  ) {
+    router.events.subscribe((y: NavigationEnd) => {
+      if(y instanceof NavigationEnd){
+        fbq('track', 'PageView');
+      }
+    })
+   }
 
   ngOnInit() {
 
