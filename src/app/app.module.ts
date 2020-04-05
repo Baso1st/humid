@@ -8,14 +8,24 @@ import { AppComponent } from './app.component';
 import { WeatherService } from './services/weather.service';
 import { LocationService } from './services/location.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+//#Angular Material
 import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatIconModule} from '@angular/material'
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
+//#endregion
 import { ReactiveFormsModule } from '@angular/forms';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ConfirmDialogComponent
+  ],
+  entryComponents: [
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +35,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatAutocompleteModule,
     MatInputModule,
     MatIconModule,
+    MatSlideToggleModule,
+    MatDialogModule,
+    MatButtonModule,
     ReactiveFormsModule
   ],
   providers: [WeatherService, LocationService],

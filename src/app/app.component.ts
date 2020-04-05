@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from './services/weather.service';
-import { WeatherPoint} from './types';
+import { WeatherPoint } from './types';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, startWith, map, flatMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { LocationService } from './services/location.service';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocompleteSelectedEvent, MatDialog } from '@angular/material';
 import { Router, NavigationEnd } from '@angular/router';
-declare let fbq:Function;
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+declare let fbq: Function;
 
 @Component({
   selector: 'app-root',
@@ -26,34 +27,40 @@ export class AppComponent implements OnInit {
   screedWidth: number;
 
   FortWayneLat = 41.1253703;
-  FortWayneLong  = -85.3485966;
+  FortWayneLong = -85.3485966;
+
+  isOver18: false;
 
   constructor(
     private weatherService: WeatherService,
     private formBuilder: FormBuilder,
     private locationService: LocationService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     router.events.subscribe((y: NavigationEnd) => {
-      if(y instanceof NavigationEnd){
+      if (y instanceof NavigationEnd) {
         fbq('track', 'PageView');
       }
     })
-   }
+  }
 
   ngOnInit() {
 
     this.screedWidth = window.screen.width;
 
     this.formGroup = this.formBuilder.group({
-      'location': ['']
+      'location': [''],
+      'makeItExciting': false
     });
 
-     this.filteredCities = this.formGroup.get('location').valueChanges.pipe(
-        debounceTime(100),
-        distinctUntilChanged(),
-        flatMap(newValue => newValue.trim() ? this.locationService.getLocations(newValue): [])
-       )
+    this.setupExcitmentResponse();
+
+    this.filteredCities = this.formGroup.get('location').valueChanges.pipe(
+      debounceTime(100),
+      distinctUntilChanged(),
+      flatMap(newValue => newValue.trim() ? this.locationService.getLocations(newValue) : [])
+    )
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -76,7 +83,35 @@ export class AppComponent implements OnInit {
       });
     } else {
     }
-    
+
+  }
+
+  setupExcitmentResponse() {
+    this.formGroup.get('makeItExciting').valueChanges.subscribe(newVal => {
+      if(newVal === true){
+        this.openDialog();
+      } else{
+        this.isOver18 = false;
+      }
+      this.setImageSource();
+    })
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '250px',
+      data: {isOver18: this.isOver18}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result && result.isOver18) {
+        this.isOver18 = result.isOver18;
+      } else {
+        this.isOver18 = false;
+        this.formGroup.get('makeItExciting').setValue(false);
+      }
+      this.setImageSource();
+    });
   }
 
   /**
@@ -106,7 +141,7 @@ export class AppComponent implements OnInit {
    * Sets the images source based on the humidity level
    */
   setImageSource() {
-    if (this.weatherPoint) {
+    if (this.isOver18 && this.weatherPoint) {
       let humidity = this.weatherPoint.main.humidity;
       if (!humidity || humidity <= 0) {
         this.imageSource = this.imageSourceDirectory + "humid1.png";
@@ -121,6 +156,8 @@ export class AppComponent implements OnInit {
       } else if (humidity <= 100) {
         this.imageSource = this.imageSourceDirectory + "humid6.png";
       }
+    } else{
+      this.imageSource = this.imageSourceDirectory + "humid0.png";
     }
   }
 
@@ -132,6 +169,5 @@ export class AppComponent implements OnInit {
       this.iconSource = `${this.iconSourceAPI}${this.weatherPoint.weather[0].icon}${this.screedWidth >= 768 ? '@2x' : ''}.png`
     }
   }
-
 
 }
