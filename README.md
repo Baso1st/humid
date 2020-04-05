@@ -35,5 +35,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## This project is Just another weather app 
 
-## The following tutorial on medium is used to configure Facebook Pixel 
+## The following tutorial on medium is used to configure Facebook Pixel (didn't work)
 https://medium.com/javascript-in-plain-english/setting-up-google-analytics-and-facebook-pixel-in-angular-8-b934219991d4
+
